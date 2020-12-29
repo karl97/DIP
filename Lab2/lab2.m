@@ -117,7 +117,7 @@ I=imread('mandrill.tif');
 I=rgb2gray(I);
 I=im2double(I);
 %going to the frequency domain
-If=fft(I);
+If=fft2(I);
 Ifs=fftshift(If);
 %calculating the angles and magnitudes
 mag=abs(Ifs);
@@ -138,14 +138,14 @@ clc
 Im=imread('mandrill.tif');
 Im=rgb2gray(Im);
 Im=im2double(Im);
-Imf=fft(Im);
+Imf=fft2(Im);
 Imf=fftshift(Imf);
 magm=abs(Imf);
 angm=angle(Imf);
 %getting the angle and magnitude of the clown
 Ic=imread('clown.tif');
 Ic=im2double(Ic);
-Icf=fft(Ic);
+Icf=fft2(Ic);
 Icf=fftshift(Icf);
 magc=abs(Icf);
 angc=angle(Icf);
