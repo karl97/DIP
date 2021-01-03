@@ -11,7 +11,7 @@ images=cell(1,66);
 for i=3:length(got)
     s.file_name=got(i).name;
     s.farm='got';
-    s.image=imrotate((imread(strcat('Oats/Gotala 50 corns/',got(i).name))),-90);
+    s.image=imresize(imrotate((imread(strcat('Oats/Gotala 50 corns/',got(i).name))),-90),[2016,1512]);
     s.cultivation=get_cult(got(i).name);
     s.type=get_type(got(i).name);
     images(imc)={s};
@@ -21,7 +21,7 @@ end
 for i=3:length(lan)
     s.file_name=lan(i).name;
     s.farm='lan';
-    s.image=imrotate((imread(strcat('Oats/Lanna 50 corns/',lan(i).name))),-90);
+    s.image=imresize(imrotate((imread(strcat('Oats/Lanna 50 corns/',lan(i).name))),-90),[2016,1512]);
     s.cultivation=get_cult(lan(i).name);
     s.type=get_type(lan(i).name);
     images(imc)={s};
@@ -31,7 +31,7 @@ end
 for i=3:length(mul)
     s.file_name=mul(i).name;
     s.farm='mul';
-    s.image=imrotate((imread(strcat('Oats/Multorp 50 corns/',mul(i).name))),-90);
+    s.image=imresize(imrotate((imread(strcat('Oats/Multorp 50 corns/',mul(i).name))),-90),[2016,1512]);
     s.cultivation=get_cult_mul(mul(i).name);
     s.type=get_type(mul(i).name);
     images(imc)={s};

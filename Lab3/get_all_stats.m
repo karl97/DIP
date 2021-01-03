@@ -10,14 +10,10 @@ s=to_mm(s);
 end
 
 function out=to_mm(in)
-a=49;
-n=7;
+n=1000*(1/400)/14; %one pixel size
 f = fieldnames(in);
-for i=1:2
-    in.(f{i})=in.(f{i})/a;
-end
-for i=3:6
-    in.(f{i})=in.(f{i})/n;
+for i=1:6 
+    in.(f{i})=in.(f{i})*n;
 end
 out=in;
 end

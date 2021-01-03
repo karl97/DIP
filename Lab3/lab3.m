@@ -5,11 +5,10 @@ clear
 I = imread('recognition/query/QueryImage1.jpg');
 I = rgb2gray(I);
 pts = detectSURFFeatures(I);
-%pts = detectSURFFeatures(I,'MetricThreshold',500.0,'NumOctaves',3,'NumScaleLevels',6);%increase points found
-%pts = detectSURFFeatures(I,'MetricThreshold',1000.0,'NumOctaves',10,'NumScaleLevels',4);%detect smaller blobs
+%pts = detectSURFFeatures(I,'MetricThreshold',1000.0,'NumOctaves',3,'NumScaleLevels',6);%increase scale levels
+%pts = detectSURFFeatures(I,'MetricThreshold',1000.0,'NumOctaves',4,'NumScaleLevels',4);%detect larger blobs
 figure;imshow(I); hold on;
 plot(pts.selectStrongest(50)); hold off;
-
 
 
 %% 1.2
@@ -17,6 +16,7 @@ plot(pts.selectStrongest(50)); hold off;
 [feats,validPts] = extractFeatures(I,pts);
 figure;imshow(I); hold on;
 plot(validPts.selectStrongest(50)); hold off;
+
 %% 1.3
 clc
 clear
@@ -31,7 +31,8 @@ I2g = rgb2gray(I2);
 pts2 = detectSURFFeatures(I2g);
 [feats2,validPts2] = extractFeatures(I2g,pts2);
 
-indexPairs = matchFeatures(feats1,feats2);%,'MatchThreshold',10,'MaxRatio',0.3);
+indexPairs = matchFeatures(feats1,feats2);
+%indexPairs = matchFeatures(feats1,feats2,'MatchThreshold',10,'MaxRatio',0.3); %optimal config
 matchedPoints1 = validPts1(indexPairs(:, 1));
 matchedPoints2 = validPts2(indexPairs(:, 2));
 showMatchedFeatures(I,I2,matchedPoints1,matchedPoints2,'montage')
@@ -58,7 +59,7 @@ images=load_oats();
 nroat=zeros(1,length(images));
 Ibins = cell(1,66);
 for i=1:length(images)
-    I=im2double(imresize(rgb2gray(images{i}.image),[2016,1512]));%using half size to compute faster 
+    I=im2double(rgb2gray(images{i}.image));
     Ibins(i)={get_bin_oats(I,6,55)};
     %figure;imshow((1-Ibins{i}).*I);
     nroat(1,i)=max(bwlabel(Ibins{i}),[],'all');
@@ -67,8 +68,10 @@ maximim=max(nroat,[],'all');
 minimum=min(nroat,[],'all');
 
 %% 2.3
+figure;imshow(images{1}.image);
 figure;subplot(1,2,1);imshow(Ibins{1});
 subplot(1,2,2);imshow(Ibins{12});
+
 [mu,med,sigma]=bin_area_stats(Ibins{1});%huv
 [mu2,med2,sigma2]=bin_area_stats(Ibins{12});%grn
 figure;subplot(2,3,1);bar(categorical({'mean','median','std'}),[mu,mu2;med,med2;sigma,sigma2]);
@@ -84,13 +87,13 @@ title('Min Axis');legend('huv','grn');
 subplot(2,3,3);bar(categorical({'mean','median','std'}),[mu,mu2;med,med2;sigma,sigma2]);
 title('Max Axis');legend('huv','grn');
 
-[mu,med,sigma]=color_stats(Ibins{1},im2double(imresize(images{1}.image,[2016,1512])));
-[mu2,med2,sigma2]=color_stats(Ibins{12},im2double(imresize(images{12}.image,[2016,1512])));
+[mu,med,sigma]=color_stats(Ibins{1},im2double(images{1}.image));
+[mu2,med2,sigma2]=color_stats(Ibins{12},im2double(images{12}.image));
 subplot(2,3,4);bar(categorical({'mean huv','mean grn','median huv','median grn','std huv','std grn'}),[mu;mu2;med;med2;sigma;sigma2]);
 title('RGB');legend('R','G','B');
 
-[mu,med,sigma]=color_stats(Ibins{1},im2double(rgb2hsv(imresize(images{1}.image,[2016,1512]))));
-[mu2,med2,sigma2]=color_stats(Ibins{12},im2double(rgb2hsv(imresize(images{12}.image,[2016,1512]))));
+[mu,med,sigma]=color_stats(Ibins{1},im2double(rgb2hsv(images{1}.image)));
+[mu2,med2,sigma2]=color_stats(Ibins{12},im2double(rgb2hsv(images{12}.image)));
 subplot(2,3,5);bar(categorical({'mean huv','mean grn','median huv','median grn','std huv','std grn'}),[mu;mu2;med;med2;sigma;sigma2]);
 title('HSV');legend('H','S','V');
 
@@ -100,12 +103,12 @@ title('HSV');legend('H','S','V');
 % area just divide by 49
 %imshow(imresize(images{12}.image,[2016,1512]))
 
-stats=get_all_stats(Ibins{1},im2double(imresize(images{1}.image,[2016,1512])));
+stats=get_all_stats(Ibins{1},im2double(images{1}.image));
 
 %% 2.5
 
 for i=1:length(images)
-    stats(i)=get_all_stats(Ibins{i},im2double(imresize(images{i}.image,[2016,1512])));
+    stats(i)=get_all_stats(Ibins{i},im2double(images{i}.image));
 end
 
 %%
