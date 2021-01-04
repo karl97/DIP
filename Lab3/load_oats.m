@@ -4,40 +4,42 @@ got=dir('Oats/Gotala 50 corns/*.*');
 lan=dir('Oats/Lanna 50 corns/*.*');
 mul=dir('Oats/Multorp 50 corns/*.*');
 
-s=struct('file_name','','farm','','image',0,'cultivation',0,'type',0);%struct to hold all information
+s=struct('file_name','','farm',0,'image',0,'cultivation',0,'type',0);%struct to hold all information
 imc=1;%counter for all images
+
 %filling all data from gotala
 images=cell(1,66);
 for i=3:length(got)
     s.file_name=got(i).name;
-    s.farm='got';
+    s.farm=1;
     s.image=imresize(imrotate((imread(strcat('Oats/Gotala 50 corns/',got(i).name))),-90),[2016,1512]);
     s.cultivation=get_cult(got(i).name);
     s.type=get_type(got(i).name);
     images(imc)={s};
     imc=imc+1;
 end
+
 %filling all data from lanna
 for i=3:length(lan)
     s.file_name=lan(i).name;
-    s.farm='lan';
+    s.farm=2;
     s.image=imresize(imrotate((imread(strcat('Oats/Lanna 50 corns/',lan(i).name))),-90),[2016,1512]);
     s.cultivation=get_cult(lan(i).name);
     s.type=get_type(lan(i).name);
     images(imc)={s};
     imc=imc+1;
 end
+
 %filling all data from multorp
 for i=3:length(mul)
     s.file_name=mul(i).name;
-    s.farm='mul';
+    s.farm=3;
     s.image=imresize(imrotate((imread(strcat('Oats/Multorp 50 corns/',mul(i).name))),-90),[2016,1512]);
-    s.cultivation=get_cult_mul(mul(i).name);
+    s.cultivation=get_cult_mul(mul(i).name);%special case since they were given on bboard
     s.type=get_type(mul(i).name);
     images(imc)={s};
     imc=imc+1;
 end
-
 
 end
 

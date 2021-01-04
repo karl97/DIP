@@ -8,6 +8,7 @@ Irgb(3)={I(:,:,3)};
 mu=zeros(1,3);
 median_=zeros(1,3);
 sigma=zeros(1,3);
+
 for i=1:3
     temp=Irgb{i};%get r or g or b / h or s or v components
     %only get mean in the filtered areas

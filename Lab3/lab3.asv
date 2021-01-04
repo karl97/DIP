@@ -15,7 +15,7 @@ plot(pts.selectStrongest(50)); hold off;
 
 [feats,validPts] = extractFeatures(I,pts);
 figure;imshow(I); hold on;
-%plot 50 strongest valid  pts
+%po
 plot(validPts.selectStrongest(50)); hold off;
 
 %% 1.3
@@ -32,9 +32,8 @@ I2g = rgb2gray(I2);
 pts2 = detectSURFFeatures(I2g);
 [feats2,validPts2] = extractFeatures(I2g,pts2);
 
-%match features and display the connections
-%indexPairs = matchFeatures(feats1,feats2); %default config
-indexPairs = matchFeatures(feats1,feats2,'MatchThreshold',10,'MaxRatio',0.3); %optimal config
+indexPairs = matchFeatures(feats1,feats2);
+%indexPairs = matchFeatures(feats1,feats2,'MatchThreshold',10,'MaxRatio',0.3); %optimal config
 matchedPoints1 = validPts1(indexPairs(:, 1));
 matchedPoints2 = validPts2(indexPairs(:, 2));
 showMatchedFeatures(I,I2,matchedPoints1,matchedPoints2,'montage')
@@ -43,7 +42,6 @@ showMatchedFeatures(I,I2,matchedPoints1,matchedPoints2,'montage')
 %% 1.4
 clc
 clear
-%find matching images for all query images
 for i=1:20
     recognition(i);
 end
@@ -56,20 +54,17 @@ clear
 images=load_oats();
 
 %% no clear of variables so we dont need to load all images again
-% 2.2 a) 
+% 2.2 a) going to derive my method on fewer images before applying on the
+% whole set
 
-%init of data
 nroat=zeros(1,length(images));
 Ibins = cell(1,66);
-
-%getting the binary mask for all images
 for i=1:length(images)
     I=im2double(rgb2gray(images{i}.image));
-    Ibins(i)={get_bin_oats(I,6,55)}; %get bin mask
-    %figure;imshow((1-Ibins{i}).*I); %visualization
-    nroat(1,i)=max(bwlabel(Ibins{i}),[],'all'); %gettng nr of oats in image
+    Ibins(i)={get_bin_oats(I,6,55)};
+    %figure;imshow((1-Ibins{i}).*I);
+    nroat(1,i)=max(bwlabel(Ibins{i}),[],'all');
 end
-%max and min nr oats in image
 maximim=max(nroat,[],'all');
 minimum=min(nroat,[],'all');
 
