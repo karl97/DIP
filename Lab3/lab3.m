@@ -240,7 +240,7 @@ title('Cult std');legend('fat','bel','symp');
 
 %% color stats
 figure;
-
+%means
 a=mean(reshape([got.average_RGB],[3 length([got.average_RGB])/3])');
 a2=mean(reshape([got.average_HSV],[3 length([got.average_HSV])/3])');
 b=mean(reshape([lan.average_RGB],[3 length([lan.average_RGB])/3])');
